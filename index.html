@@ -10,7 +10,7 @@
 <body id="home-page">
 
     <h1 class="page-home-title">Blog - Posts (Aplicação Fetch)</h1>
-    <button id="create-post">Criar um post</button>
+    <button onclick="hideAddFormPost()" id="create-post">Criar um post</button>
 
     <div>
         <p id="loading">Carregando...</p>
@@ -18,7 +18,7 @@
         <div id="posts-Container"></div>
     </div>
 
-    <form id="form-add-post">
+    <form id="form-add-post" class="hide-Element">
         <h2 id="form-add-post-title">Adicione uma postagem</h2>
         <div>
             <label for="author">Autor da postagem:</label>

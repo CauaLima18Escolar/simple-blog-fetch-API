@@ -5,17 +5,71 @@ const users = ['###'];
 // Elementos do DOM.
 const loadingElement = document.querySelector('#loading');
 const postsContainer = document.querySelector('#posts-Container');
-
 const postContainer = document.querySelector('#post-container');
+
 const postPage = document.querySelector('#post-page');
 const postCommentsContainer = document.querySelector('#post-comments');
 const postFormComment = document.querySelector('#form-comment');
 const emailInput = document.querySelector('#email');
 const bodyInput = document.querySelector('#body');
 
+const formAddPost = document.querySelector('#form-add-post');
+const userInputAddPost = document.querySelector('#author');
+const titleInputAddPost = document.querySelector('#title');
+const bodyInputAddPost = document.querySelector('#description');
+const addPostButton = document.querySelector('#form-add-post-button');
+
 // Pega o ID da URL para saber o local atual.
 const urlSearchParams = new URLSearchParams(window.location.search)
 const postID = urlSearchParams.get('id');
+
+addPostButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    let dataPost = {
+        user: userInputAddPost.value,
+        id: crypto,
+        title: titleInputAddPost.value,
+        body: bodyInputAddPost.value
+    };
+
+    dataPost = JSON.stringify(dataPost);
+    addNewPost(dataPost);
+});
+
+function hideAddFormPost(){
+    formAddPost.classList.toggle('hide-Element')
+};
+
+async function addNewPost(thePost){
+    const response = await fetch(URL_base, {
+        method: 'POST',
+        body: thePost,
+        headers: {
+            "Content-type": "application/json"
+        }
+    });
+
+    const data = await response.json();
+
+    const post = document.createElement('div');
+    const userName = document.createElement('p');
+    const postTitle = document.createElement('h2');
+    const postBody = document.createElement('p');
+    const seeMore = document.createElement('a');
+
+    userName.textContent = `Usuário: ${data.user}`;
+    postTitle.textContent = data.title;
+    postBody.textContent = data.body;
+    seeMore.textContent = 'Ler';
+    
+    post.appendChild(userName);
+    post.appendChild(postTitle);
+    post.appendChild(postBody);
+    post.appendChild(seeMore);
+
+    postsContainer.appendChild(post);
+};
 
 // Função assíncrona - requisição no servidor para obter todas as postagens dos usuários.
 async function getAllPosts(){
