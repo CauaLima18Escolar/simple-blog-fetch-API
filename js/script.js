@@ -23,19 +23,21 @@ const addPostButton = document.querySelector('#form-add-post-button');
 const urlSearchParams = new URLSearchParams(window.location.search)
 const postID = urlSearchParams.get('id');
 
-addPostButton.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    let dataPost = {
-        user: userInputAddPost.value,
-        id: crypto,
-        title: titleInputAddPost.value,
-        body: bodyInputAddPost.value
-    };
-
-    dataPost = JSON.stringify(dataPost);
-    addNewPost(dataPost);
-});
+if(addPostButton){
+    addPostButton.addEventListener('click', (e) => {
+        e.preventDefault();
+    
+        let dataPost = {
+            user: userInputAddPost.value,
+            id: crypto,
+            title: titleInputAddPost.value,
+            body: bodyInputAddPost.value
+        };
+    
+        dataPost = JSON.stringify(dataPost);
+        addNewPost(dataPost);
+    });
+};
 
 function hideAddFormPost(){
     formAddPost.classList.toggle('hide-Element')
