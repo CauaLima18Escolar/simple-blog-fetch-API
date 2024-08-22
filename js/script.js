@@ -114,6 +114,7 @@ async function postComment(comment){
     createComment(data);
 };
 
+
 if (!postID){
     getAllPosts();
 } else {
@@ -129,3 +130,4 @@ if (!postID){
         postComment(comment);
     });
 };
+

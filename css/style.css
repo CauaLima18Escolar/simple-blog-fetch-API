@@ -10,7 +10,28 @@ body {
     background-color: #f6f6f6;
 }
 
+#home-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+    justify-content: start;
+}
+
+#form-add-post {
+    place-self: start;
+    background-color: #fff;
+    padding: 16px 24px;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+#form-add-post-title {
+    margin-bottom: 20px;
+}
+
 .page-home-title {
+    grid-column: 1 / -1;
     margin-bottom: 32px;
 }
 
@@ -36,7 +57,7 @@ body {
     margin-bottom: 12px;
 }
 
-a, input[type='submit']{
+a, input[type='submit'], #create-post, #form-add-post-button{
     display: inline-block;
     padding: 10px 16px;
     border: none;
@@ -49,7 +70,13 @@ a, input[type='submit']{
     transition: 0.3s;
 }
 
-a:hover, input[type='submit']:hover {
+#create-post {
+    margin-bottom: 20px;
+    grid-column: 1 / -1;
+    place-self: start;
+}
+
+a:hover, input[type='submit']:hover, #create-post:hover, #form-add-post-button:hover{
     opacity: 1;
 }
 

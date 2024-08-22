@@ -5,12 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - Aplicação com Fetch API</title>
     <link rel="stylesheet" href="./css/style.css">
-    <script src="./js/script.js" defer></script>
+    <script src="js/script.js" defer></script>
 </head>
-<body>
-    <h1 class="page-home-title">Blog - Posts (Aplicação Fetch)</h1>
-    <p id="loading">Carregando...</p>
+<body id="home-page">
 
-    <div id="posts-Container"></div>
+    <h1 class="page-home-title">Blog - Posts (Aplicação Fetch)</h1>
+    <button id="create-post">Criar um post</button>
+
+    <div>
+        <p id="loading">Carregando...</p>
+    
+        <div id="posts-Container"></div>
+    </div>
+
+    <form id="form-add-post">
+        <h2 id="form-add-post-title">Adicione uma postagem</h2>
+        <div>
+            <label for="author">Autor da postagem:</label>
+            <input type="text" name="author" id="author">
+        </div>
+
+        <div>
+            <label for="title">Título da postagem:</label>
+            <input type="text" name="title" id="title">
+        </div>
+
+        <div>
+            <label for="description">Descrição:</label>
+            <input type="text" name="description" id="description">
+        </div>
+
+        <button id="form-add-post-button">Adicionar Post</button>
+    </form>
 </body>
 </html>
