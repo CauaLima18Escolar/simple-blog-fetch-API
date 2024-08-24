@@ -23,19 +23,32 @@ const addPostButton = document.querySelector('#form-add-post-button');
 const urlSearchParams = new URLSearchParams(window.location.search)
 const postID = urlSearchParams.get('id');
 
-if(addPostButton){
-    addPostButton.addEventListener('click', (e) => {
+if(formAddPost){
+    formAddPost.addEventListener('submit', (e) => {
         e.preventDefault();
-    
+
+        let arrPosts = []
+
+        if (localStorage.getItem('dataPosts')){
+            arrPosts = localStorage.getItem('dataPosts')
+            arrPosts = JSON.parse(arrPosts)
+        }
+
         let dataPost = {
-            user: userInputAddPost.value,
-            id: crypto,
+            userId: userInputAddPost.value,
+            id: Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b => b.toString(16).padStart(2, '0')).join(''),
             title: titleInputAddPost.value,
             body: bodyInputAddPost.value
         };
-    
+
+        arrPosts.push(dataPost)
+        arrPosts = JSON.stringify(arrPosts)
+        localStorage.setItem('dataPosts', arrPosts)
+
         dataPost = JSON.stringify(dataPost);
         addNewPost(dataPost);
+
+        userInputAddPost.value = '', titleInputAddPost.value = '', bodyInputAddPost.value = ''
     });
 };
 
@@ -60,7 +73,7 @@ async function addNewPost(thePost){
     const postBody = document.createElement('p');
     const seeMore = document.createElement('a');
 
-    userName.textContent = `Usuário: ${data.user}`;
+    userName.textContent = `Usuário: ${data.userId}`;
     postTitle.textContent = data.title;
     postBody.textContent = data.body;
     seeMore.textContent = 'Ler';
@@ -70,7 +83,7 @@ async function addNewPost(thePost){
     post.appendChild(postBody);
     post.appendChild(seeMore);
 
-    postsContainer.appendChild(post);
+    postsContainer.prepend(post);
 };
 
 // Função assíncrona - requisição no servidor para obter todas as postagens dos usuários.
@@ -85,6 +98,15 @@ async function getAllPosts(){
     const dataPosts = await postsResponse.json();
     const dataUsers = await usersResponse.json();
 
+    if (localStorage.length > 0){
+        let arrPosts = localStorage.getItem('dataPosts');
+        
+        arrPosts = JSON.parse(arrPosts);
+        arrPosts.map((post) => {
+            dataPosts.unshift(post);
+        });
+    };
+
     dataUsers.map((dataUsers) => {
         users.push(dataUsers.name);
     });
@@ -96,7 +118,12 @@ async function getAllPosts(){
         const postBody = document.createElement('p');
         const seeMore = document.createElement('a');
         
-        userName.textContent = `Usuário: ${users[dataPost.userId]}`
+        if (users[dataPost.userId]){
+            userName.textContent = `Usuário: ${users[dataPost.userId]}`
+        } else {
+            userName.textContent = `Usuário: ${dataPost.userId}`
+        };
+        
         postTitle.textContent = dataPost.title.charAt(0).toUpperCase() + dataPost.title.slice(1);
         postBody.textContent = dataPost.body;
         seeMore.textContent = 'Ler';
@@ -117,13 +144,13 @@ async function getPost(id){
         fetch(`${URL_base}/${id}`),
         fetch(`${URL_base}/${id}/comments`)
     ]);
-
+    
     const dataPost = await responsePost.json();
     const dataComments = await responseComments.json();
-
+    
     const postTitle = document.createElement('h1');
     const postBody = document.createElement('p');
-    
+
     postTitle.textContent = dataPost.title.charAt(0).toUpperCase() + dataPost.title.slice(1);
     postBody.textContent = dataPost.body;
     
